@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Blackjack</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Blackjack</h1>
+
+<div id="table">
+    <div class="hand">
+        <h2>Jakaja</h2>
+        <div id="dealer-cards" class="cards"></div>
+        <div id="dealer-value" class="value"></div>
+    </div>
+
+    <div class="hand">
+        <h2>Pelaaja</h2>
+        <div id="player-cards" class="cards"></div>
+        <div id="player-value" class="value"></div>
+    </div>
+</div>
+
+<div id="controls">
+    <button id="btn-new">Uusi peli</button>
+    <button id="btn-hit">Ota kortti</button>
+    <button id="btn-stand">Jää</button>
+</div>
+
+<div id="message"></div>
+
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+body {
+    background: lightgreen;
+    color: darkred;
+    font-family: Arial;
+    text-align: center;
+}
+
+#table {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.hand {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    min-height: 100px;
+}
+
+.card {
+    width: 60px;
+    height: 90px;
+    background: white;
+    color: black;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: 0.3s ease-out;
+}
+
+.card.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.value {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+#controls {
+    margin-top: 35px;
+}
+
+button {
+    padding: 10px 24px;
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+#message {
+    margin-top: 24px;
+    font-size: 20px;
+    font-weight: bold;
+}
