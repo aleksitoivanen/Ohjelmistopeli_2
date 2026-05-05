@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mummon esinepeli</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Mummon esinepeli</h1>
+
+  <div class="aloituslaatikko">
+    <input id="nimi" type="text" placeholder="Pelaajan nimi">
+
+    <select id="difficulty">
+      <option value="HELPPO">Helppo</option>
+      <option value="KESKIVAIKEA">Keskivaikea</option>
+      <option value="VAIKEA">Vaikea</option>
+    </select>
+
+    <button onclick="aloitaPeli()">Aloita peli</button>
+  </div>
+
+  <div class="tilalaatikko">
+    <p id="info">Aloita peli ensin.</p>
+    <p id="hint"></p>
+  </div>
+
+  <div class="kartta-container">
+    <img src="kartta.jpg" class="kartta" alt="Euroopan kartta">
+
+    <button class="maa-nappi" style="left: 57%; top: 30%;" onclick="lenna('SE')" title="Ruotsi"></button>
+    <button class="maa-nappi" style="left: 41%; top: 45%;" onclick="lenna('GB')" title="Yhdistynyt kuningaskunta"></button>
+    <button class="maa-nappi" style="left: 40%; top: 66%;" onclick="lenna('FR')" title="Ranska"></button>
+    <button class="maa-nappi" style="left: 52%; top: 82%;" onclick="lenna('IT')" title="Italia"></button>
+    <button class="maa-nappi" style="left: 59%; top: 70%;" onclick="lenna('RO')" title="Romania"></button>
+    <button class="maa-nappi" style="left: 79%; top: 88%;" onclick="lenna('TR')" title="Turkki"></button>
+  </div>
+
+  <!-- BLACKJACK -->
+  <div id="blackjack-container" class="overlay">
+    <h2>Blackjack-haaste</h2>
+
+    <p id="bj-progress">Voitot: 0 / 5</p>
+
+    <div id="bj-dealer" class="bj-kasi"></div>
+    <div id="bj-player" class="bj-kasi"></div>
+
+    <p id="bj-info"></p>
+
+    <div class="pelinapit">
+      <button id="bj-hit" onclick="bjHit()">Ota kortti</button>
+      <button id="bj-stand" onclick="bjStand()">Jää</button>
+      <button id="bj-uusi" onclick="bjUusi()">Uusi kierros</button>
+    </div>
+  </div>
+
+  <!-- MATIKKA2 -->
+  <div id="matikka-container" class="overlay">
+    <h2>Matikkahaaste</h2>
+
+    <p id="matikka-progress">Oikein: 0 / 5</p>
+    <p id="matikka-ajastin">Aikaa: 10</p>
+
+    <div id="matikka-kysymys" class="matikka-kysymys"></div>
+
+    <input id="matikka-vastaus" type="number" step="any" placeholder="Kirjoita vastaus">
+
+    <div class="pelinapit">
+      <button onclick="matikkaVastaa()">Vastaa</button>
+    </div>
+
+    <p id="matikka-info"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
