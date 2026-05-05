@@ -12,7 +12,6 @@ body {
     height: 60px;
     background: darkgreen;
     border-radius: 10px;
-    padding: 5px;
     overflow: hidden;
 }
 
@@ -20,66 +19,53 @@ body {
     content: "";
     position: absolute;
     right: 0;
-    top: 0;
     width: 10px;
     height: 100%;
-    background: repeating-linear-gradient(
-        45deg,
-        white,
-        white 5px,
-        black 5px,
-        black 10px
-    );
+    background: repeating-linear-gradient(45deg, white 0 5px, black 5px 10px);
 }
 
 .horse {
     position: absolute;
-    height: 50px;
-    width: 50px;
-    background-image: url("hevonen.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
     top: 5px;
+    width: 50px;
+    height: 50px;
     left: 0;
-    transition: left 0.3s ease-out;
+    background: url("hevonen.png") center / contain no-repeat;
+    transition: 0.3s;
 }
 
-#horseButtons {
-    margin-bottom: 20px;
+/* Yhteiset nappityylit */
+button {
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
 }
 
+/* Hevosnapit */
 .horseBtn {
     padding: 15px 25px;
     font-size: 24px;
     margin: 10px;
-    border-radius: 10px;
-    background-color: blue;
-    color: white;
-    border: none;
-    cursor: pointer;
+    background: blue;
 }
 
 .horseBtn:hover {
-    background-color: darkblue;
+    background: darkblue;
 }
 
 .mainButton {
     padding: 14px 28px;
     font-size: 22px;
-    border-radius: 10px;
-    background-color: green;
-    color: white;
-    border: none;
-    cursor: pointer;
     margin-top: 20px;
+    background: green;
 }
 
 .mainButton:hover {
-    background-color: darkgreen;
+    background: darkgreen;
 }
 
 .mainButton:disabled {
-    background-color: grey;
+    background: grey;
     cursor: not-allowed;
 }
