@@ -1,0 +1,85 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background: green;
+    padding: 10px;
+}
+
+.track {
+    position: relative;
+    margin: 10px auto;
+    width: 80%;
+    height: 60px;
+    background: darkgreen;
+    border-radius: 10px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.track::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 10px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        white,
+        white 5px,
+        black 5px,
+        black 10px
+    );
+}
+
+.horse {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background-image: url("hevonen.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 5px;
+    left: 0;
+    transition: left 0.3s ease-out;
+}
+
+#horseButtons {
+    margin-bottom: 20px;
+}
+
+.horseBtn {
+    padding: 15px 25px;
+    font-size: 24px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.horseBtn:hover {
+    background-color: darkblue;
+}
+
+.mainButton {
+    padding: 14px 28px;
+    font-size: 22px;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.mainButton:hover {
+    background-color: darkgreen;
+}
+
+.mainButton:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
