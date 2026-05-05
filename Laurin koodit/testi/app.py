@@ -3,7 +3,15 @@ from flask_cors import CORS
 from paaohjelma import *
 from blackjack import aloitustila, hit, stand, serialisoi
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+@app.after_request
+def after_request(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+    return response
+
 BLACKJACK_PELI = None
 BLACKJACK_WINS = 0
 BLACKJACK_ACTIVE = False
@@ -101,6 +109,60 @@ def blackjack_stand():
         data["voitot"] = BLACKJACK_WINS
 
     return jsonify(data)
+
+@app.route("/api/resetoi", methods=["POST", "OPTIONS"])
+def api_resetoi():
+    if request.method == "OPTIONS":
+        return jsonify({"status": "ok"}), 200
+
+    try:
+        data = request.get_json() or {}
+        nimi = data.get("nimi", "").strip()
+        difficulty = data.get("difficulty", "HELPPO")
+        aloitus = "EFHK"
+
+        if nimi == "":
+            return jsonify({
+                "status": "error",
+                "message": "Käyttäjätunnus puuttuu."
+            }), 400
+
+        vanha_peli = hae_pelaajan_peli(nimi)
+
+        if vanha_peli:
+            game_id = vanha_peli["id"]
+            resetoi_peli(game_id, aloitus, difficulty)
+            message = "Peli resetoitiin ja aloitettiin alusta!"
+        else:
+            game_id = luo_peli(nimi, aloitus, difficulty)
+            message = "Uusi peli luotiin!"
+
+        peli = hae_peli(game_id)
+        esineet = hae_esineet()
+
+        if not esineet:
+            return jsonify({
+                "status": "error",
+                "message": "Item-taulusta ei löytynyt yhtään esinettä."
+            }), 500
+
+        esine = esineet[peli["current_item"]]
+
+        return jsonify({
+            "status": "ok",
+            "game_id": game_id,
+            "message": message,
+            "hint": anna_vihje(esine, peli["attempts"]),
+            "co2": round(peli["co2_consumed"], 1),
+            "budget": peli["co2_budget"]
+        })
+
+    except Exception as e:
+        print("Virhe /api/resetoi:", e)
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
