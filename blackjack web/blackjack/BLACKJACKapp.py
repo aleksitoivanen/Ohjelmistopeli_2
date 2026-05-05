@@ -1,14 +1,18 @@
-from flask import Flask, jsonify, request, send_from_directory
+import os
+from flask import Flask, jsonify, send_from_directory
 from blackjack import aloitustila, hit, stand, serialisoi
 
-app = Flask(__name__, static_folder="../frontend", static_url_path="")
+BASE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.abspath(os.path.join(BASE, ".."))
+FRONT = os.path.join(ROOT, "frontend")
+
+app = Flask(__name__, static_folder=FRONT, static_url_path="")
 
 PELI = aloitustila()
 
-
 @app.route("/")
 def index():
-    return send_from_directory("../frontend", "index.html")
+    return send_from_directory(FRONT, "BLACKJACK.html")
 
 
 @app.get("/api/uusi")

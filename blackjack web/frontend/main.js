@@ -32,7 +32,7 @@ function render(tila) {
         let teksti = kortti;
 
         if (tila.tila === "pelaa" && index > 0) {
-            teksti = "🂠"; // piilotettu kortti
+            teksti = "🂠";
         }
 
         const el = card(teksti);
@@ -40,7 +40,7 @@ function render(tila) {
         setTimeout(() => el.classList.add("show"), index * 100);
     });
 
-    // Pelaajan kortit
+
     tila.pelaaja.forEach((kortti, index) => {
         const el = card(kortti);
         playerCardsDiv.appendChild(el);

@@ -1,41 +1,55 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Euro Hunt - hahmotelmapohja</title>
-  <link href="../CSS/Tyylit.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Mummon esinepeli</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <main class="page">
 
-    <header class="top">
-      <section class="card logo-card">
-        LOGO / OTSIKKO
-      </section>
+  <h1>Mummon esinepeli</h1>
 
-      <section class="card items-card">
-        <div class="items-title">ESINEET</div>
+  <div class="start-box">
+    <input id="nimi" type="text" placeholder="Pelaajan nimi">
 
-        <div class="item-row">
-          <div class="item-box">1</div>
-          <div class="item-box">2</div>
-          <div class="item-box">3</div>
-          <div class="item-box">4</div>
-          <div class="item-box">5</div>
-        </div>
-      </section>
+    <select id="difficulty">
+      <option value="HELPPO">Helppo</option>
+      <option value="KESKIVAIKEA">Keskivaikea</option>
+      <option value="VAIKEA">Vaikea</option>
+    </select>
 
-      <section class="card budget-card">
-        BUDJETTILASKURI
-      </section>
-    </header>
+    <button onclick="aloitaPeli()">Aloita peli</button>
+  </div>
 
-    <section class="map-card">
-      <img src="../testi/europe-map.jpg" class="map-image" alt="Euroopan kartta">
-    </section>
+  <div class="status-box">
+    <p id="info">Aloita peli ensin.</p>
+    <p id="hint"></p>
+  </div>
 
-  </main>
+  <div class="map-container">
+    <img src="europe-map.jpg" class="map" alt="Euroopan kartta">
+
+    <button class="country-btn" style="left: 67%; top: 34%;" onclick="lenna('SE')" title="Ruotsi"></button>
+    <button class="country-btn" style="left: 58%; top: 47%;" onclick="lenna('IT')" title="Italia"></button>
+    <button class="country-btn" style="left: 44%; top: 61%;" onclick="lenna('GB')" title="Britit"></button>
+    <button class="country-btn" style="left: 71%; top: 68%;" onclick="lenna('RO')" title="Romania"></button>
+    <button class="country-btn" style="left: 79%; top: 83%;" onclick="lenna('TR')" title="Turkki"></button>
+    <button class="country-btn" style="left: 26%; top: 56%;" onclick="lenna('FR')" title="Ranska"></button>
+  </div>
+
+  <div id="blackjack-container" class="blackjack-overlay">
+    <h2>Blackjack-haaste</h2>
+
+    <p id="bj-progress">Voitot: 0 / 5</p>
+    <div id="bj-dealer"></div>
+    <div id="bj-player"></div>
+    <p id="bj-info"></p>
+
+    <button onclick="bjHit()">Ota kortti</button>
+    <button onclick="bjStand()">Jää</button>
+    <button onclick="bjUusi()">Uusi kierros</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

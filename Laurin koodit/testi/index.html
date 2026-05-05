@@ -37,7 +37,31 @@
     <button class="country-btn" style="left: 79%; top: 83%;" onclick="lenna('TR')" title="Turkki"></button>
     <button class="country-btn" style="left: 26%; top: 56%;" onclick="lenna('FR')" title="Ranska"></button>
   </div>
+<div id="blackjack-container" style="
+  position:absolute;
+  top:10%;
+  left:10%;
+  width:80%;
+  height:75%;
+  background:rgba(0,0,0,0.9);
+  color:white;
+  display:none;
+  z-index:999;
+  padding:20px;
+  border-radius:10px;
+">
 
+  <h2>Blackjack</h2>
+
+  <div id="bj-dealer"></div>
+  <div id="bj-player"></div>
+
+  <p id="bj-info"></p>
+
+  <button onclick="bjHit()">Ota kortti</button>
+  <button onclick="bjStand()">Jää</button>
+
+</div>
   <script src="script.js"></script>
 </body>
 </html>
