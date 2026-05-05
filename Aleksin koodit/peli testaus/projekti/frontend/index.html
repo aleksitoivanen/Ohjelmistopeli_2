@@ -30,7 +30,6 @@
   <div class="kartta-container">
     <img src="kartta.jpg" class="kartta" alt="Euroopan kartta">
 
-    <!-- Nappien paikat voi vielä hienosäätää -->
     <button class="maa-nappi" style="left: 57%; top: 30%;" onclick="lenna('SE')" title="Ruotsi"></button>
     <button class="maa-nappi" style="left: 41%; top: 45%;" onclick="lenna('GB')" title="Yhdistynyt kuningaskunta"></button>
     <button class="maa-nappi" style="left: 40%; top: 66%;" onclick="lenna('FR')" title="Ranska"></button>
@@ -39,8 +38,10 @@
     <button class="maa-nappi" style="left: 79%; top: 88%;" onclick="lenna('TR')" title="Turkki"></button>
   </div>
 
-  <div id="blackjack-container" class="blackjack-overlay">
+  <!-- BLACKJACK -->
+  <div id="blackjack-container" class="overlay">
     <h2>Blackjack-haaste</h2>
+
     <p id="bj-progress">Voitot: 0 / 5</p>
 
     <div id="bj-dealer" class="bj-kasi"></div>
@@ -48,11 +49,29 @@
 
     <p id="bj-info"></p>
 
-    <div class="bj-napit">
+    <div class="pelinapit">
       <button id="bj-hit" onclick="bjHit()">Ota kortti</button>
       <button id="bj-stand" onclick="bjStand()">Jää</button>
       <button id="bj-uusi" onclick="bjUusi()">Uusi kierros</button>
     </div>
+  </div>
+
+  <!-- MATIKKA -->
+  <div id="matikka-container" class="overlay">
+    <h2>Matikkahaaste</h2>
+
+    <p id="matikka-progress">Oikein: 0 / 5</p>
+    <p id="matikka-ajastin">Aikaa: 10</p>
+
+    <div id="matikka-kysymys" class="matikka-kysymys"></div>
+
+    <input id="matikka-vastaus" type="number" step="any" placeholder="Kirjoita vastaus">
+
+    <div class="pelinapit">
+      <button onclick="matikkaVastaa()">Vastaa</button>
+    </div>
+
+    <p id="matikka-info"></p>
   </div>
 
   <script src="script.js"></script>

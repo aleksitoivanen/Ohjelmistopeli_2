@@ -68,7 +68,7 @@ h1 {
   scale: 1.2;
 }
 
-.blackjack-overlay {
+.overlay {
   position: fixed;
   top: 8%;
   left: 10%;
@@ -98,12 +98,36 @@ h1 {
   min-width: 45px;
 }
 
-.bj-napit {
+.pelinapit {
   margin-top: 20px;
 }
 
-.bj-napit button {
+.pelinapit button {
   padding: 10px 18px;
   margin: 0 8px;
   font-size: 16px;
+}
+
+.matikka-kysymys {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 25px 0 15px 0;
+}
+
+#matikka-vastaus {
+  padding: 10px 14px;
+  font-size: 20px;
+  width: 180px;
+  text-align: center;
+  border-radius: 8px;
+  border: none;
+}
+
+#matikka-info,
+#matikka-progress,
+#matikka-ajastin,
+#bj-progress,
+#bj-info {
+  font-size: 20px;
+  margin-top: 12px;
 }

@@ -1,5 +1,9 @@
 let gameId = null;
 let odottavaMaa = null;
+let odottavaItalia = null;
+
+let matikkaAjastin = null;
+let matikkaAikaaJaljella = 10;
 
 async function aloitaPeli() {
   const nimi = document.getElementById("nimi").value.trim();
@@ -65,6 +69,13 @@ async function lenna(isoCountry) {
       return;
     }
 
+    if (data.status === "math_required") {
+      odottavaItalia = isoCountry;
+      document.getElementById("info").textContent = data.message;
+      await avaaMatikka();
+      return;
+    }
+
     if (data.status === "game_over") {
       document.getElementById("info").textContent =
         `${data.message} CO2: ${data.co2} / ${data.budget}`;
@@ -86,9 +97,12 @@ async function lenna(isoCountry) {
     document.getElementById("info").textContent =
       `Lensit maahan ${data.country}. Matka: ${data.km} km. CO2: ${data.co2} / ${data.budget}`;
 
-    if (data.found_item) {
+    if (data.item_status === "loydetty") {
       document.getElementById("hint").textContent =
         "Löysit esineen! Uusi vihje: " + data.hint;
+    } else if (data.item_status === "jo_saatu") {
+      document.getElementById("hint").textContent =
+        "Olet saanut esineen täältä jo aiemmin.";
     } else {
       document.getElementById("hint").textContent =
         "Väärä maa. Vihje: " + data.hint;
@@ -100,6 +114,10 @@ async function lenna(isoCountry) {
       "Virhe lentäessä. Tarkista Flask-palvelin.";
   }
 }
+
+/* -------------------------
+   BLACKJACK
+------------------------- */
 
 async function avaaBlackjack() {
   const response = await fetch("http://127.0.0.1:5000/api/blackjack/aloita", {
@@ -199,4 +217,86 @@ function renderBlackjack(data) {
   if (!peliKesken && !data.valmis) {
     infoDiv.textContent += " Aloita uusi kierros painamalla 'Uusi kierros'.";
   }
+}
+
+/* -------------------------
+   MATIKKA
+------------------------- */
+
+async function avaaMatikka() {
+  const response = await fetch("http://127.0.0.1:5000/api/matikka/aloita", {
+    method: "POST"
+  });
+
+  const data = await response.json();
+  document.getElementById("matikka-container").style.display = "block";
+  renderMatikka(data);
+  kaynnistaMatikkaAjastin();
+}
+
+function kaynnistaMatikkaAjastin() {
+  clearInterval(matikkaAjastin);
+  matikkaAikaaJaljella = 10;
+  document.getElementById("matikka-ajastin").textContent = `Aikaa: ${matikkaAikaaJaljella}`;
+
+  matikkaAjastin = setInterval(async () => {
+    matikkaAikaaJaljella--;
+    document.getElementById("matikka-ajastin").textContent = `Aikaa: ${matikkaAikaaJaljella}`;
+
+    if (matikkaAikaaJaljella <= 0) {
+      clearInterval(matikkaAjastin);
+      await lahetaMatikkaVastaus(null);
+    }
+  }, 1000);
+}
+
+async function matikkaVastaa() {
+  const kentta = document.getElementById("matikka-vastaus");
+  const vastaus = kentta.value.trim();
+
+  if (vastaus === "") {
+    return;
+  }
+
+  await lahetaMatikkaVastaus(vastaus);
+}
+
+async function lahetaMatikkaVastaus(vastaus) {
+  clearInterval(matikkaAjastin);
+
+  const response = await fetch("http://127.0.0.1:5000/api/matikka/vastaa", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      vastaus: vastaus
+    })
+  });
+
+  const data = await response.json();
+  renderMatikka(data);
+
+  if (data.valmis) {
+    document.getElementById("matikka-container").style.display = "none";
+    document.getElementById("info").textContent =
+      "Matikkahaaste läpäisty. Lennetään Italiaan...";
+
+    if (odottavaItalia) {
+      const maa = odottavaItalia;
+      odottavaItalia = null;
+      await lenna(maa);
+    }
+    return;
+  }
+
+  kaynnistaMatikkaAjastin();
+}
+
+function renderMatikka(data) {
+  document.getElementById("matikka-progress").textContent = `Oikein: ${data.oikein} / 5`;
+  document.getElementById("matikka-kysymys").textContent = data.kysymys || "";
+  document.getElementById("matikka-info").textContent = data.viesti || "";
+  document.getElementById("matikka-vastaus").value = "";
+  document.getElementById("matikka-vastaus").focus();
 }

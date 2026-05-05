@@ -6,24 +6,56 @@ from blackjack import aloitustila, hit, stand, serialisoi
 app = Flask(__name__)
 CORS(app)
 
+# Blackjack / Ruotsi
 BLACKJACK_PELI = None
 BLACKJACK_VOITOT = 0
 RUOTSI_AVATTU = False
+
+# Matikka / Italia
+MATIKKA_TEHTAVAT = [
+    {"kysymys": "7 * 7", "vastaus": 49},
+    {"kysymys": "2000 / 20", "vastaus": 100},
+    {"kysymys": "Paljonko on 15 % numerosta 350?", "vastaus": 52.5},
+    {"kysymys": "6 * 11", "vastaus": 66},
+    {"kysymys": "9 * 250", "vastaus": 2250}
+]
+
+MATIKKA_OIKEIN = 0
+ITALIA_AVATTU = False
+MATIKKA_KYSYMYS = None
+MATIKKA_VASTAUS = None
+MATIKKA_INDEKSI = 0
+
+
+def seuraava_matiikkatehtava():
+    global MATIKKA_KYSYMYS, MATIKKA_VASTAUS, MATIKKA_INDEKSI
+
+    tehtava = MATIKKA_TEHTAVAT[MATIKKA_INDEKSI]
+    MATIKKA_KYSYMYS = tehtava["kysymys"]
+    MATIKKA_VASTAUS = tehtava["vastaus"]
+    return MATIKKA_KYSYMYS
 
 
 @app.route("/api/aloita", methods=["POST"])
 def api_aloita():
     global BLACKJACK_PELI, BLACKJACK_VOITOT, RUOTSI_AVATTU
+    global MATIKKA_OIKEIN, ITALIA_AVATTU, MATIKKA_KYSYMYS, MATIKKA_VASTAUS, MATIKKA_INDEKSI
 
     data = request.get_json()
     nimi = data["nimi"]
     difficulty = data["difficulty"]
     aloitus = "EFHK"
 
-    # Resetoidaan blackjack-haaste uutta peliä varten
+    # Resetoi minipelit uuden pelin alussa
     BLACKJACK_PELI = None
     BLACKJACK_VOITOT = 0
     RUOTSI_AVATTU = False
+
+    MATIKKA_OIKEIN = 0
+    ITALIA_AVATTU = False
+    MATIKKA_KYSYMYS = None
+    MATIKKA_VASTAUS = None
+    MATIKKA_INDEKSI = 0
 
     vanha_peli = hae_pelaajan_peli(nimi)
 
@@ -47,17 +79,24 @@ def api_aloita():
 
 @app.route("/api/lenna", methods=["POST"])
 def api_lenna():
-    global RUOTSI_AVATTU
+    global RUOTSI_AVATTU, ITALIA_AVATTU
 
     data = request.get_json()
     game_id = data["game_id"]
     kohde_maa = data["iso_country"]
 
-    # Ruotsiin pääsee vain blackjack-haasteen jälkeen
+    # Ruotsi vaatii blackjackin
     if kohde_maa == "SE" and not RUOTSI_AVATTU:
         return jsonify({
             "status": "blackjack_required",
             "message": "Ruotsiin lentäminen vaatii blackjack-haasteen. Voita 5 kierrosta."
+        })
+
+    # Italia vaatii matikkapelin
+    if kohde_maa == "IT" and not ITALIA_AVATTU:
+        return jsonify({
+            "status": "math_required",
+            "message": "Italiaan lentäminen vaatii matikkahaasteen. Ratkaise 5 tehtävää oikein."
         })
 
     lento = lenna(game_id, kohde_maa)
@@ -66,7 +105,7 @@ def api_lenna():
         return jsonify(lento)
 
     esineet = hae_esineet()
-    osui = tarkista_esine(game_id, kohde_maa, esineet)
+    esine_tila = tarkista_esine(game_id, kohde_maa, esineet)
 
     peli = hae_peli(game_id)
 
@@ -80,10 +119,15 @@ def api_lenna():
 
     return jsonify({
         **lento,
-        "found_item": osui,
+        "found_item": esine_tila == "loydetty",
+        "item_status": esine_tila,
         "hint": anna_vihje(seuraava_esine, peli["attempts"])
     })
 
+
+# -------------------------
+# BLACKJACK / RUOTSI
+# -------------------------
 
 @app.route("/api/blackjack/aloita", methods=["POST"])
 def blackjack_aloita():
@@ -154,6 +198,73 @@ def blackjack_stand():
     data["kierros_loppui"] = True
 
     return jsonify(data)
+
+
+# -------------------------
+# MATIKKA / ITALIA
+# -------------------------
+
+@app.route("/api/matikka/aloita", methods=["POST"])
+def matikka_aloita():
+    global MATIKKA_OIKEIN, MATIKKA_KYSYMYS, MATIKKA_VASTAUS, MATIKKA_INDEKSI
+
+    MATIKKA_OIKEIN = 0
+    MATIKKA_INDEKSI = 0
+    kysymys = seuraava_matiikkatehtava()
+
+    return jsonify({
+        "kysymys": kysymys,
+        "oikein": MATIKKA_OIKEIN,
+        "valmis": False,
+        "viesti": "Ratkaise tehtävä ennen ajan loppumista."
+    })
+
+
+@app.route("/api/matikka/vastaa", methods=["POST"])
+def matikka_vastaa():
+    global MATIKKA_OIKEIN, ITALIA_AVATTU, MATIKKA_VASTAUS, MATIKKA_INDEKSI
+
+    data = request.get_json()
+    vastaus = data.get("vastaus")
+
+    oikein = False
+
+    try:
+        annettu = float(vastaus)
+        if annettu == float(MATIKKA_VASTAUS):
+            oikein = True
+    except:
+        oikein = False
+
+    if oikein:
+        MATIKKA_OIKEIN += 1
+        MATIKKA_INDEKSI += 1
+
+    if MATIKKA_OIKEIN >= 5:
+        ITALIA_AVATTU = True
+        return jsonify({
+            "oikein": MATIKKA_OIKEIN,
+            "valmis": True,
+            "viesti": "Hienoa! Ratkaisit 5 tehtävää oikein. Nyt voit lentää Italiaan."
+        })
+
+    if oikein:
+        kysymys = seuraava_matiikkatehtava()
+        return jsonify({
+            "kysymys": kysymys,
+            "oikein": MATIKKA_OIKEIN,
+            "valmis": False,
+            "onnistuiko": True,
+            "viesti": "Oikein!"
+        })
+    else:
+        return jsonify({
+            "kysymys": MATIKKA_KYSYMYS,
+            "oikein": MATIKKA_OIKEIN,
+            "valmis": False,
+            "onnistuiko": False,
+            "viesti": "Väärä vastaus tai aika loppui. Yritä samaa tehtävää uudestaan."
+        })
 
 
 if __name__ == "__main__":
