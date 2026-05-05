@@ -6,7 +6,7 @@ from blackjack import aloitustila, hit, stand, serialisoi
 app = Flask(__name__)
 CORS(app)
 
-# Blackjack / Ruotsi
+# Blackjack / Ruotsi2
 BLACKJACK_PELI = None
 BLACKJACK_VOITOT = 0
 RUOTSI_AVATTU = False
