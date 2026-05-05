@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>Mummon esinepeli</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Mummon esinepeli</h1>
+
+  <div class="start-box">
+    <input id="nimi" type="text" placeholder="Pelaajan nimi">
+
+    <select id="difficulty">
+      <option value="HELPPO">Helppo</option>
+      <option value="KESKIVAIKEA">Keskivaikea</option>
+      <option value="VAIKEA">Vaikea</option>
+    </select>
+
+    <button onclick="aloitaPeli()">Aloita peli</button>
+  </div>
+
+  <div class="status-box">
+    <p id="info">Aloita peli ensin.</p>
+    <p id="hint"></p>
+  </div>
+
+  <div class="map-container">
+    <img src="europe-map.jpg" class="map" alt="Euroopan kartta">
+
+    <!-- Vaihda näiden maiden ISO-koodit sen mukaan, mitä maita pelissä tarvitaan -->
+    <button class="country-btn" style="left: 67%; top: 34%;" onclick="lenna('SE')" title="Ruotsi"></button>
+    <button class="country-btn" style="left: 58%; top: 47%;" onclick="lenna('IT')" title="Italia"></button>
+    <button class="country-btn" style="left: 44%; top: 61%;" onclick="lenna('GB')" title="Britit"></button>
+    <button class="country-btn" style="left: 71%; top: 68%;" onclick="lenna('RO')" title="Romania"></button>
+    <button class="country-btn" style="left: 79%; top: 83%;" onclick="lenna('TR')" title="Turkki"></button>
+    <button class="country-btn" style="left: 26%; top: 56%;" onclick="lenna('FR')" title="Ranska"></button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
