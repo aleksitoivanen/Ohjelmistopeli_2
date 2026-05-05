@@ -4,7 +4,19 @@ let odottavaItalia = null;
 
 let matikkaAjastin = null;
 let matikkaAikaaJaljella = 10;
+function naytaLentoGif() {
+  const overlay = document.getElementById("lento-overlay");
+  overlay.style.display = "flex";
+}
 
+function piilotaLentoGif() {
+  const overlay = document.getElementById("lento-overlay");
+  overlay.style.display = "none";
+}
+
+function odota(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 async function aloitaPeli() {
   const nimi = document.getElementById("nimi").value.trim();
   const difficulty = document.getElementById("difficulty").value;
@@ -89,6 +101,7 @@ async function lenna(isoCountry) {
   }
 
   try {
+    naytaLentoGif();
     const response = await fetch("http://127.0.0.1:5000/api/lenna", {
       method: "POST",
       headers: {
@@ -101,6 +114,9 @@ async function lenna(isoCountry) {
     });
 
     const data = await response.json();
+
+    await odota(2000);
+    piilotaLentoGif();
 
     if (data.status === "blackjack_required") {
       odottavaMaa = isoCountry;
@@ -150,6 +166,7 @@ async function lenna(isoCountry) {
 
   } catch (error) {
     console.error(error);
+    piilotaLentoGif();
     document.getElementById("info").textContent =
       "Virhe lentäessä. Tarkista Flask-palvelin.";
   }
