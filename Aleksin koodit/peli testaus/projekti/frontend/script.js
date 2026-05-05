@@ -220,7 +220,7 @@ function renderBlackjack(data) {
 }
 
 /* -------------------------
-   MATIKKA
+   MATIKKA2
 ------------------------- */
 
 async function avaaMatikka() {
