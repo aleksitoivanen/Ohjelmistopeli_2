@@ -72,4 +72,3 @@ CREATE TABLE game_items (
     CONSTRAINT fk_gameitems_item FOREIGN KEY (item_id) REFERENCES item(id),
     CONSTRAINT unique_game_item UNIQUE (game_id, item_id)
 ) CHARSET=latin1;
-
