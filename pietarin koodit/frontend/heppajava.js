@@ -2,62 +2,60 @@ let positions = [0, 0, 0];
 let finished = [];
 let chosenHorse = null;
 
+const tracksDiv = document.getElementById("tracks");
+const resultText = document.getElementById("result");
+const gameDiv = document.getElementById("game");
+const startBtn = document.getElementById("startBtn");
+const sound = document.getElementById("hirnahdus");
+
 function render() {
-    const tracksDiv = document.getElementById("tracks");
-    tracksDiv.innerHTML = "";
-
-    positions.forEach((pos, i) => {
+    tracksDiv.innerHTML = positions.map(pos => {
         let percent = Math.min((pos / 30) * 100, 100);
-
-        tracksDiv.innerHTML += `
+        return `
         <div class="track">
             <div class="horse" style="left:${percent}%"></div>
         </div>`;
-    });
+    }).join("");
 }
 
 function startGame() {
-    if (!chosenHorse) {
-        alert("Valitse hevonen!");
-        return;
-    }
+    if (!chosenHorse) return alert("Valitse hevonen!");
 
     fetch('/reset');
 
-    document.getElementById("game").style.display = "block";
-    document.getElementById("result").innerText = "";
     positions = [0, 0, 0];
     finished = [];
+
+    gameDiv.style.display = "block";
+    resultText.innerText = "";
+
     render();
 }
 
 function chooseHorse(horse) {
     chosenHorse = horse;
-    document.getElementById("startBtn").disabled = false;
+    startBtn.disabled = false;
 }
 
 function moveHorses() {
-    const sound = document.getElementById("hirnahdus");
     sound.currentTime = 0;
     sound.play();
 
     fetch('/move')
-    .then(res => res.json())
-    .then(data => {
-        positions = data.positions;
-        finished = data.finished;
-        render();
+        .then(res => res.json())
+        .then(data => {
+            positions = data.positions;
+            finished = data.finished;
+            render();
 
-        if (finished.length >= 1) {
-            if (finished[0] === chosenHorse) {
-                document.getElementById("result").innerText =
-                    "Voitit! " + chosenHorse + " tuli ensimmäisenä maaliin!";
-            } else {
-                document.getElementById("result").innerText =
-                    "Hävisit! Voittaja oli " + finished[0] + ".";
+            if (finished.length) {
+                const winner = finished[0];
+                resultText.innerText =
+                    winner === chosenHorse
+                        ? `Voitit! ${winner} tuli ensimmäisenä maaliin!`
+                        : `Hävisit! Voittaja oli ${winner}.`;
             }
-        }
-    });
+        });
 }
 
 document.addEventListener("DOMContentLoaded", render);
