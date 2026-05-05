@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<title>Hevoskilpailu</title>
+<link rel="stylesheet" href="heppacss.css">
+</head>
+<body>
+
+<audio id="hirnahdus" src="hirnahdus.mp3"></audio>
+
+<h1>Heppakisa</h1>
+<p>Valitse hevonen. jos hevosesi on ensimmäisenä maalissa voitat</p>
+
+<div id="horseButtons">
+    <button class="horseBtn" onclick="chooseHorse('Hevonen 1')">1</button>
+    <button class="horseBtn" onclick="chooseHorse('Hevonen 2')">2</button>
+    <button class="horseBtn" onclick="chooseHorse('Hevonen 3')">3</button>
+</div>
+
+<button id="startBtn" class="mainButton" onclick="startGame()" disabled>Aloita peli</button>
+
+<div id="game" style="display:none;">
+    <div id="tracks"></div>
+    <button class="mainButton" onclick="moveHorses()">Heitä noppaa</button>
+    <h2 id="result"></h2>
+</div>
+
+<script src="heppajava.js"></script>
+</body>
+</html>
