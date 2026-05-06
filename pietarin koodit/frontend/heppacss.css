@@ -30,7 +30,7 @@ body {
     width: 50px;
     height: 50px;
     left: 0;
-    background: url("hevonen.png") center / contain no-repeat;
+    background: url("../../Laurin koodit/testiprojekti/frontend/hevonen.png") center / contain no-repeat;
     transition: 0.3s;
 }
 

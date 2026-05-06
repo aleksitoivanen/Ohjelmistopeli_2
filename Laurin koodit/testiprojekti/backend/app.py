@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from paaohjelma import *
 from blackjack import aloitustila, hit, stand, serialisoi
-
+import random
 app = Flask(__name__)
 CORS(app)
 
@@ -25,6 +25,11 @@ ITALIA_AVATTU = False
 MATIKKA_KYSYMYS = None
 MATIKKA_VASTAUS = None
 MATIKKA_INDEKSI = 0
+# Heppakisa / Iso-Britannia
+HEPAT = ["Hevonen 1", "Hevonen 2", "Hevonen 3"]
+HEPPA_PAJAT = [0, 0, 0]
+HEPPA_MAALISSA = []
+BRITANNIA_AVATTU = False
 
 
 def seuraava_matiikkatehtava():
@@ -40,7 +45,7 @@ def seuraava_matiikkatehtava():
 def api_aloita():
     global BLACKJACK_PELI, BLACKJACK_VOITOT, RUOTSI_AVATTU
     global MATIKKA_OIKEIN, ITALIA_AVATTU, MATIKKA_KYSYMYS, MATIKKA_VASTAUS, MATIKKA_INDEKSI
-
+    global HEPPA_PAJAT, HEPPA_MAALISSA, BRITANNIA_AVATTU
     data = request.get_json()
     nimi = data["nimi"]
     difficulty = data["difficulty"]
@@ -72,6 +77,9 @@ def api_aloita():
     MATIKKA_VASTAUS = None
     MATIKKA_INDEKSI = 0
 
+    HEPPA_PAJAT = [0, 0, 0]
+    HEPPA_MAALISSA = []
+    BRITANNIA_AVATTU = False
     if vanha_peli and jatka is True:
         # Jatketaan vanhaa peliä ilman resetointia
         game_id = vanha_peli["id"]
@@ -131,8 +139,13 @@ def api_lenna():
         return jsonify({
             "status": "math_required",
             "message": "Italiaan lentäminen vaatii matikkahaasteen. Ratkaise 5 tehtävää oikein."
-        })
 
+        })
+    if kohde_maa == "GB" and not BRITANNIA_AVATTU:
+        return jsonify({
+            "status": "horse_required",
+            "message": "Iso-Britanniaan lentäminen vaatii heppakisan. Valitse hevonen ja voita kisa."
+        })
     lento = lenna(game_id, kohde_maa)
 
     if lento["status"] == "game_over":
@@ -315,6 +328,61 @@ def matikka_vastaa():
             "viesti": "Väärä vastaus tai aika loppui. Yritä samaa tehtävää uudestaan."
         })
 
+@app.route("/api/heppa/aloita", methods=["POST"])
+def heppa_aloita():
+    global HEPPA_PAJAT, HEPPA_MAALISSA
 
+    HEPPA_PAJAT = [0, 0, 0]
+    HEPPA_MAALISSA = []
+
+    return jsonify({
+        "positions": HEPPA_PAJAT,
+        "finished": HEPPA_MAALISSA
+    })
+
+
+@app.route("/api/heppa/liiku", methods=["POST"])
+def heppa_liiku():
+    global HEPPA_PAJAT, HEPPA_MAALISSA, BRITANNIA_AVATTU
+
+    data = request.get_json()
+    valittu_hevonen = data.get("chosenHorse")
+
+    if len(HEPPA_MAALISSA) >= 1:
+        voittaja = HEPPA_MAALISSA[0]
+        voitto = voittaja == valittu_hevonen
+
+        if voitto:
+            BRITANNIA_AVATTU = True
+
+        return jsonify({
+            "positions": HEPPA_PAJAT,
+            "finished": HEPPA_MAALISSA,
+            "winner": voittaja,
+            "won": voitto,
+            "valmis": True
+        })
+
+    for i in range(len(HEPPA_PAJAT)):
+        if HEPAT[i] not in HEPPA_MAALISSA:
+            askel = random.randint(1, 6)
+            HEPPA_PAJAT[i] += askel
+
+            if HEPPA_PAJAT[i] >= 30 and HEPAT[i] not in HEPPA_MAALISSA:
+                HEPPA_MAALISSA.append(HEPAT[i])
+
+    voittaja = HEPPA_MAALISSA[0] if HEPPA_MAALISSA else None
+    voitto = voittaja == valittu_hevonen if voittaja else False
+
+    if voitto:
+        BRITANNIA_AVATTU = True
+
+    return jsonify({
+        "positions": HEPPA_PAJAT,
+        "finished": HEPPA_MAALISSA,
+        "winner": voittaja,
+        "won": voitto,
+        "valmis": len(HEPPA_MAALISSA) >= 1
+    })
 if __name__ == "__main__":
     app.run(debug=True)

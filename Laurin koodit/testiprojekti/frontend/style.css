@@ -259,3 +259,84 @@ h1 {
   padding: 6px 10px;
   cursor: pointer;
 }
+.heppa-ohje {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.heppa-valinnat {
+  margin-bottom: 20px;
+}
+
+.heppa-valinta-nappi,
+.heppa-paanappi {
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  padding: 12px 22px;
+  font-size: 20px;
+  margin: 8px;
+  background: #1f3a5f;
+}
+
+.heppa-valinta-nappi:hover,
+.heppa-paanappi:hover {
+  background: #2a4f80;
+}
+
+.heppa-paanappi:disabled {
+  background: grey;
+  cursor: not-allowed;
+}
+
+.heppa-rata-alue {
+  margin-top: 20px;
+}
+
+.heppa-track {
+  position: relative;
+  margin: 14px auto;
+  width: 90%;
+  height: 72px;
+  background: #16324f;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.heppa-track::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 12px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    white 0 6px,
+    black 6px 12px
+  );
+}
+
+.heppa-label {
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  color: white;
+  font-weight: bold;
+  z-index: 2;
+}
+
+.heppa-horse {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 80px;
+  height: 48px;
+  background: url("hevonen.png") center / contain no-repeat;
+  transition: 0.3s;
+}
+
+#heppa-tulos {
+  margin-top: 20px;
+  font-size: 24px;
+}

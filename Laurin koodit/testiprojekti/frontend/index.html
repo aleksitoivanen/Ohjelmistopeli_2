@@ -126,7 +126,27 @@
 
     <p id="matikka-info"></p>
   </div>
+<div id="heppa-container" class="overlay">
+  <h2>Heppakisa</h2>
+  <p class="heppa-ohje">Valitse hevonen. Jos hevosesi tulee ensimmäisenä maaliin, voitat.</p>
 
+  <div id="heppa-valinnat" class="heppa-valinnat">
+    <button class="heppa-valinta-nappi" onclick="valitseHevonen('Hevonen 1')">1</button>
+    <button class="heppa-valinta-nappi" onclick="valitseHevonen('Hevonen 2')">2</button>
+    <button class="heppa-valinta-nappi" onclick="valitseHevonen('Hevonen 3')">3</button>
+  </div>
+
+  <button id="heppa-aloita" class="heppa-paanappi" onclick="aloitaHeppakisa()" disabled>Aloita kisa</button>
+
+  <div id="heppa-rata-alue" class="heppa-rata-alue" style="display:none;">
+    <div id="heppa-radat"></div>
+    <button id="heppa-liiku" class="heppa-paanappi" onclick="liikutaHepat()">Liiku</button>
+    <button id="heppa-uusi" class="heppa-paanappi" onclick="avaaHeppakisa()" style="display:none;">Yritä uudestaan</button>
+    <h3 id="heppa-tulos"></h3>
+  </div>
+
+  <audio id="hirnahdus" src="hirnahdus.mp3"></audio>
+</div>
   <div id="lento-overlay" class="lento-overlay">
     <div class="lento-sisalto">
       <h2>Lennetään...</h2>
