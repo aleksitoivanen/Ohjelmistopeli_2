@@ -156,6 +156,7 @@ async function lenna(isoCountry) {
     if (data.item_status === "loydetty") {
       document.getElementById("hint").textContent =
         "Löysit esineen! Uusi vihje: " + data.hint;
+      naytaTarina(data.tarina);
     } else if (data.item_status === "jo_saatu") {
       document.getElementById("hint").textContent =
         "Olet saanut esineen täältä jo aiemmin.";
@@ -356,4 +357,31 @@ function renderMatikka(data) {
   document.getElementById("matikka-info").textContent = data.viesti || "";
   document.getElementById("matikka-vastaus").value = "";
   document.getElementById("matikka-vastaus").focus();
+}
+
+function naytaTarina(tarina) {
+  if (!tarina || !tarina.teksti) {
+    return;
+  }
+
+  document.getElementById("tarina-otsikko").textContent =
+    tarina.otsikko || "Löysit esineen";
+
+  document.getElementById("tarina-teksti").textContent = tarina.teksti;
+
+  const kuva = document.getElementById("tarina-kuva");
+
+  if (tarina.kuva) {
+    kuva.src = tarina.kuva;
+    kuva.style.display = "block";
+  } else {
+    kuva.removeAttribute("src");
+    kuva.style.display = "none";
+  }
+
+  document.getElementById("tarina-overlay").style.display = "flex";
+}
+
+function suljeTarina() {
+  document.getElementById("tarina-overlay").style.display = "none";
 }

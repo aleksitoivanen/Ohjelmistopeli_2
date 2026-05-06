@@ -7,7 +7,7 @@ yhteys = mysql.connector.connect(
     port=3306,
     database='ohjelmistopeli',
     user='root',
-    password='Allu8221!',
+    password='291198',
     autocommit=True
 )
 
@@ -19,6 +19,24 @@ tarina_funktiot = {
     "Taskukello": Tarinat.taskukello
 }
 
+def hae_esineen_tarina_ja_kuva(esine):
+    kuvat = {
+        "Kirje": "kuvat/kirje.svg",
+        "Kultainen teelusikka": "kuvat/teelusikka.svg",
+        "Kaulakoru": "kuvat/kaulakoru.svg",
+        "Nahkahanskat": "kuvat/nahkahanskat.svg",
+        "Taskukello": "kuvat/taskukello.svg"
+    }
+
+    tarina = []
+    if esine["nimi"] in tarina_funktiot:
+        tarina = tarina_funktiot[esine["nimi"]]()
+
+    return {
+        "otsikko": esine["nimi"],
+        "teksti": "\n".join(tarina),
+        "kuva": kuvat.get(esine["nimi"], "")
+    }
 
 def hae_pelaajan_esineet(game_id):
     sql = "SELECT item.* FROM item JOIN game_items ON item.id = game_items.item_id WHERE game_items.game_id = %s"

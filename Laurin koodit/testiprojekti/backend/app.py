@@ -151,11 +151,26 @@ def api_lenna():
 
     seuraava_esine = esineet[peli["current_item"]]
 
+    # UUSI KOHTA: haetaan tarina vain silloin, kun esine löytyi
+    tarina = None
+
+    if esine_tila == "loydetty":
+        loydetty_esine = None
+
+        for esine in esineet:
+            if esine["iso_country"] == kohde_maa:
+                loydetty_esine = esine
+                break
+
+        if loydetty_esine is not None:
+            tarina = hae_esineen_tarina_ja_kuva(loydetty_esine)
+
     return jsonify({
         **lento,
         "found_item": esine_tila == "loydetty",
         "item_status": esine_tila,
-        "hint": anna_vihje(seuraava_esine, peli["attempts"])
+        "hint": anna_vihje(seuraava_esine, peli["attempts"]),
+        "tarina": tarina
     })
 
 
