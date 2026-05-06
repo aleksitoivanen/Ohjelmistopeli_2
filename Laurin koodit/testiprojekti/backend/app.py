@@ -161,6 +161,7 @@ def api_lenna():
 
     if esine_tila == "loydetty":
         loydetty_esine = None
+
         for esine in esineet:
             if esine["iso_country"] == kohde_maa:
                 loydetty_esine = esine
@@ -169,13 +170,14 @@ def api_lenna():
         if loydetty_esine is not None:
             tarina = hae_esineen_tarina_ja_kuva(loydetty_esine)
 
-    return jsonify({
-        **lento,
-        "found_item": esine_tila == "loydetty",
-        "item_status": esine_tila,
-        "hint": anna_vihje(seuraava_esine, peli["attempts"]),
-        "tarina": tarina
-    })
+    vastaus = dict(lento)
+
+    vastaus["found_item"] = esine_tila == "loydetty"
+    vastaus["item_status"] = esine_tila
+    vastaus["hint"] = anna_vihje(seuraava_esine, peli["attempts"])
+    vastaus["tarina"] = tarina
+
+    return jsonify(vastaus)
 
 
 # -------------------------
