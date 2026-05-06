@@ -22,20 +22,61 @@
     <button onclick="aloitaPeli()">Aloita peli</button>
   </div>
 
-  <div class="tilalaatikko">
-    <p id="info">Aloita peli ensin.</p>
-    <p id="hint"></p>
-  </div>
+  <div class="peli-layout">
 
-  <div class="kartta-container">
-    <img src="kartta.jpg" class="kartta" alt="Euroopan kartta">
+    <div class="kartta-container">
+      <img src="kartta.jpg" class="kartta" alt="Euroopan kartta">
+      <button class="maa-nappi" style="left: 1%; top: 1%;" onclick="lenna('NL')" title="Alankomaat"></button>
+      <button class="maa-nappi" style="left: 5%; top: 5%;" onclick="lenna('GR')" title="Kreikka"></button>
+      <button class="maa-nappi" style="left: 10%; top: 10%;" onclick="lenna('RS')" title="Serbia"></button>
+      <button class="maa-nappi" style="left: 15%; top: 15%;" onclick="lenna('DE')" title="Saksa"></button>
+      <button class="maa-nappi" style="left: 20%; top: 20%;" onclick="lenna('CH')" title="Sveitsi"></button>
+      <button class="maa-nappi" style="left: 30%; top: 30%;" onclick="lenna('SK')" title="Slovakia"></button>
+      <button class="maa-nappi" style="left: 35%; top: 35%;" onclick="lenna('BE')" title="Belgia"></button>
+      <button class="maa-nappi" style="left: 25%; top: 25%;" onclick="lenna('RO')" title="Romania"></button>
+      <button class="maa-nappi" style="left: 40%; top: 40%;" onclick="lenna('HU')" title="Unkari"></button>
+      <button class="maa-nappi" style="left: 45%; top: 45%;" onclick="lenna('DK')" title="Tanska"></button>
+      <button class="maa-nappi" style="left: 50%; top: 50%;" onclick="lenna('IE')" title="Irlanti"></button>
+      <button class="maa-nappi" style="left: 55%; top: 55%;" onclick="lenna('FI')" title="Suomi"></button>
+      <button class="maa-nappi" style="left: 60%; top: 60%;" onclick="lenna('PT')" title="Portugali"></button>
+      <button class="maa-nappi" style="left: 65%; top: 65%;" onclick="lenna('SI')" title="Slovenia"></button>
+      <button class="maa-nappi" style="left: 70%; top: 70%;" onclick="lenna('GB')" title="Yhdistynyt kuningaskunta"></button>
+      <button class="maa-nappi" style="left: 75%; top: 75%;" onclick="lenna('LU')" title="Luxemburg"></button>
+      <button class="maa-nappi" style="left: 80%; top: 80%;" onclick="lenna('ES')" title="Espanja"></button>
+      <button class="maa-nappi" style="left: 85%; top: 85%;" onclick="lenna('BY')" title="Valko-Venäjä"></button>
+      <button class="maa-nappi" style="left: 90%; top: 90%;" onclick="lenna('RU')" title="Venäjä"></button>
+      <button class="maa-nappi" style="left: 95%; top: 95%;" onclick="lenna('NO')" title="Norja"></button>
+      <button class="maa-nappi" style="left: 100%; top: 100%;" onclick="lenna('FR')" title="Ranska"></button>
+      <button class="maa-nappi" style="left: 2.5%; top: 2.5%;" onclick="lenna('ME')" title="Montenegro"></button>
+      <button class="maa-nappi" style="left: 7.5%; top: 7.5%;" onclick="lenna('CZ')" title="Tšekki"></button>
+      <button class="maa-nappi" style="left: 12.5%; top: 12.5%;" onclick="lenna('IS')" title="Islanti"></button>
+      <button class="maa-nappi" style="left: 17.5%; top: 17.5%;" onclick="lenna('LV')" title="Latvia"></button>
+      <button class="maa-nappi" style="left: 22.5%; top: 22.5%;" onclick="lenna('IT')" title="Italia"></button>
+      <button class="maa-nappi" style="left: 27.5%; top: 27.5%;" onclick="lenna('BA')" title="Bosnia ja Hertsegovina"></button>
+      <button class="maa-nappi" style="left: 32.5%; top: 32.5%;" onclick="lenna('MK')" title="Pohjois-Makedonia"></button>
+      <button class="maa-nappi" style="left: 37.5%; top: 37.5%;" onclick="lenna('BG')" title="Bulgaria"></button>
+      <button class="maa-nappi" style="left: 42.5%; top: 42.4%;" onclick="lenna('SE')" title="Ruotsi"></button>
+      <button class="maa-nappi" style="left: 47.5%; top: 47.5%;" onclick="lenna('EE')" title="Viro"></button>
+      <button class="maa-nappi" style="left: 52.5%; top: 52.5%;" onclick="lenna('AL')" title="Albania"></button>
+      <button class="maa-nappi" style="left: 57.5%; top: 57.5%;" onclick="lenna('MT')" title="Malta"></button>
+      <button class="maa-nappi" style="left: 62.5%; top: 62.5%;" onclick="lenna('AT')" title="Itävalta"></button>
+      <button class="maa-nappi" style="left: 67.5%; top: 67.5%;" onclick="lenna('LT')" title="Liettua"></button>
+      <button class="maa-nappi" style="left: 72.5%; top: 72.5%;" onclick="lenna('PL')" title="Puola"></button>
+      <button class="maa-nappi" style="left: 77.5%; top: 77.5%;" onclick="lenna('HR')" title="Kroatia"></button>
+    </div>
 
-    <button class="maa-nappi" style="left: 57%; top: 30%;" onclick="lenna('SE')" title="Ruotsi"></button>
-    <button class="maa-nappi" style="left: 41%; top: 45%;" onclick="lenna('GB')" title="Yhdistynyt kuningaskunta"></button>
-    <button class="maa-nappi" style="left: 40%; top: 66%;" onclick="lenna('FR')" title="Ranska"></button>
-    <button class="maa-nappi" style="left: 52%; top: 82%;" onclick="lenna('IT')" title="Italia"></button>
-    <button class="maa-nappi" style="left: 59%; top: 70%;" onclick="lenna('RO')" title="Romania"></button>
-    <button class="maa-nappi" style="left: 79%; top: 88%;" onclick="lenna('TR')" title="Turkki"></button>
+    <div class="oikea-palsta">
+      <div class="tilalaatikko">
+        <p id="info">Aloita peli ensin.</p>
+        <p id="hint"></p>
+      </div>
+
+      <div class="tilalaatikko">
+        <p id="info2">Aloita peli ensin.</p>
+        <p id="hint2"></p>
+      </div>
+    </div>
+
   </div>
 
   <!-- BLACKJACK -->
@@ -73,12 +114,14 @@
 
     <p id="matikka-info"></p>
   </div>
-<div id="lento-overlay" class="lento-overlay">
-  <div class="lento-sisalto">
-    <h2>Lennetään...</h2>
-    <img src="lentokone.gif" id="lento-gif" alt="Lentokone">
+
+  <div id="lento-overlay" class="lento-overlay">
+    <div class="lento-sisalto">
+      <h2>Lennetään...</h2>
+      <img src="lentokone.gif" id="lento-gif" alt="Lentokone">
+    </div>
   </div>
-</div>
+
   <script src="script.js"></script>
 </body>
 </html>
