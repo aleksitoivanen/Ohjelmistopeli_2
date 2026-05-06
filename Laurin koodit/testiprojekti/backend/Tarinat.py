@@ -1,6 +1,10 @@
 import textwrap
 
-alkutarina = ('Alkutarina on vielä tulossa.'
+alkutarina = ('Peli alkaa. Olet saanut mummoltasi pyynnön käydä etsimässä hänen kadottamansa esineet Euroopasta, jotka hän '
+              'on hävittänyt lomareissullaan. Mummosi on myös huolissaan uusista EU-direktiiveistä ja hän on asettanut sinulle '
+              'rajoitteet lentämisessä. Jos ylität asetetun rajan, peli päättyy ja et saa hoidettua annettua tehtävää loppuun. Mummo '
+              'on kuitenkin sen verran arvoituksellineen, ettei hän suoraan kertonut missä esineet sijaitsevat vaan hän on antanut sinulle '
+              'vihjeitä, ehkä hän haluaa opettaa sinulle jotakin. Onnea matkaan.'
               )
 wrapper1 = textwrap.TextWrapper(width=100, break_long_words=False, replace_whitespace=False)
 ensimmainen = wrapper1.wrap(text=alkutarina)

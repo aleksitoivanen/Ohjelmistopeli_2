@@ -3,9 +3,26 @@ from flask_cors import CORS
 from paaohjelma import *
 from blackjack import aloitustila, hit, stand, serialisoi
 import random
+import Tarinat
 
 app = Flask(__name__)
 CORS(app)
+
+def muodosta_alkutarina():
+    return {
+        "otsikko": "Mummon viesti",
+        "teksti": "\n".join(Tarinat.johdanto()),
+        "kuva": ""
+    }
+
+
+def muodosta_voittotarina():
+    return {
+        "otsikko": "Voitit pelin!",
+        "teksti": "Voitit pelin! Löysit kaikki mummon kadottamat esineet. Mummo on sinulle ikuisesti kiitollinen.",
+        "kuva": "kuvat/mummo.png"
+    }
+
 
 #aleksi
 BLACKJACK_PELI = None
@@ -100,18 +117,24 @@ def api_aloita():
             "game_id": game_id,
             "message": "Olet jo löytänyt kaikki esineet. Voit aloittaa uuden pelin samalla nimellä valitsemalla 'Aloita alusta'.",
             "co2": peli["co2_consumed"],
-            "budget": peli["co2_budget"]
+            "budget": peli["co2_budget"],
+            "voittotarina": muodosta_voittotarina()
         })
 
     esine = esineet[peli["current_item"]]
 
-    return jsonify({
+    vastaus = {
         "status": status,
         "game_id": game_id,
         "hint": anna_vihje(esine, peli["attempts"]),
         "co2": peli["co2_consumed"],
         "budget": peli["co2_budget"]
-    })
+    }
+
+    if status == "uusi":
+        vastaus["alkutarina"] = muodosta_alkutarina()
+
+    return jsonify(vastaus)
 
 #aleksi ja lauri
 @app.route("/api/lenna", methods=["POST"])
@@ -148,14 +171,6 @@ def api_lenna():
     esineet = hae_esineet()
     esine_tila = tarkista_esine(game_id, kohde_maa, esineet)
     peli = hae_peli(game_id)
-
-    if peli["current_item"] >= len(esineet):
-        return jsonify({
-            "status": "win",
-            "message": "Voitit pelin!"
-        })
-
-    seuraava_esine = esineet[peli["current_item"]]
     tarina = None
 
     if esine_tila == "loydetty":
@@ -170,11 +185,19 @@ def api_lenna():
             tarina = hae_esineen_tarina_ja_kuva(loydetty_esine)
 
     vastaus = dict(lento)
-
     vastaus["found_item"] = esine_tila == "loydetty"
     vastaus["item_status"] = esine_tila
-    vastaus["hint"] = anna_vihje(seuraava_esine, peli["attempts"])
     vastaus["tarina"] = tarina
+
+    if peli["current_item"] >= len(esineet):
+        vastaus["status"] = "win"
+        vastaus["message"] = "Voitit pelin!"
+        vastaus["hint"] = ""
+        vastaus["voittotarina"] = muodosta_voittotarina()
+        return jsonify(vastaus)
+
+    seuraava_esine = esineet[peli["current_item"]]
+    vastaus["hint"] = anna_vihje(seuraava_esine, peli["attempts"])
 
     return jsonify(vastaus)
 
