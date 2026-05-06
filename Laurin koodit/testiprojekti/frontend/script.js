@@ -19,7 +19,9 @@ function piilotaLentoGif() {
 }
 
 function odota(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(function(resolve) {
+    setTimeout(resolve, ms);
+  });
 }
 async function aloitaPeli() {
   const nimi = document.getElementById("nimi").value.trim();
@@ -57,12 +59,12 @@ async function lahetaAloituspyynto(nimi, difficulty, jatka = null) {
     if (data.status === "vanha_peli") {
       const jatketaanko = confirm(`Pelaajalle löytyi vanha peli.
 
-  CO2: ${data.co2} / ${data.budget}
-  Löydettyjä esineitä: ${data.current_item}
-  Vaikeustaso: ${data.difficulty}
+CO2: ${data.co2} / ${data.budget}
+Löydettyjä esineitä: ${data.current_item}
+Vaikeustaso: ${data.difficulty}
 
-  Paina OK, jos haluat jatkaa vanhaa peliä.
-  Paina Peruuta, jos haluat aloittaa alusta.`);
+Paina OK, jos haluat jatkaa vanhaa peliä.
+Paina Peruuta, jos haluat aloittaa alusta.`);
 
       await lahetaAloituspyynto(nimi, difficulty, jatketaanko);
       return;
@@ -76,7 +78,13 @@ async function lahetaAloituspyynto(nimi, difficulty, jatka = null) {
       return;
     }
 
-    const alkuTeksti = data.status === "jatkettu" ? "Peli jatkuu" : "Peli alkoi";
+    let alkuTeksti;
+
+    if (data.status === "jatkettu") {
+      alkuTeksti = "Peli jatkuu";
+    } else {
+      alkuTeksti = "Peli alkoi";
+    }
 
     document.getElementById("info").textContent =
       `${alkuTeksti}! CO2: ${data.co2} / ${data.budget}`;
