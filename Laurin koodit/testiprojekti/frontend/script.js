@@ -406,6 +406,7 @@ async function avaaHeppakisa() {
   document.getElementById("heppa-rata-alue").style.display = "none";
   document.getElementById("heppa-uusi").style.display = "none";
   document.getElementById("heppa-tulos").textContent = "";
+  document.getElementById("heppa-liiku").disabled = false;
 
   const response = await fetch("http://127.0.0.1:5000/api/heppa/aloita", {
     method: "POST"
@@ -414,6 +415,20 @@ async function avaaHeppakisa() {
   const data = await response.json();
   heppaPositions = data.positions;
   heppaFinished = data.finished;
+  renderHepat();
+}
+
+function aloitaHeppakisa() {
+  if (!heppaValittu) {
+    alert("Valitse hevonen!");
+    return;
+  }
+
+  document.getElementById("heppa-rata-alue").style.display = "block";
+  document.getElementById("heppa-tulos").textContent = "";
+  document.getElementById("heppa-uusi").style.display = "none";
+  document.getElementById("heppa-liiku").disabled = false;
+
   renderHepat();
 }
 
@@ -435,17 +450,6 @@ function renderHepat() {
       </div>
     `;
   }).join("");
-}
-
-function aloitaHeppakisa() {
-  if (!heppaValittu) {
-    alert("Valitse hevonen!");
-    return;
-  }
-
-  document.getElementById("heppa-rata-alue").style.display = "block";
-  document.getElementById("heppa-tulos").textContent = "";
-  renderHepat();
 }
 
 async function liikutaHepat() {
@@ -492,9 +496,11 @@ async function liikutaHepat() {
           await lenna(maa);
         }
       }, 1500);
+
     } else {
-      tulos.textContent = `Hävisit! Voittaja oli ${voittaja}.`;
+      tulos.textContent = `Hävisit! Voittaja oli ${voittaja}. Valitse hevonen ja yritä uudestaan.`;
       uusiNappi.style.display = "inline-block";
+      document.getElementById("heppa-rata-alue").style.display = "block";
     }
   }
 }

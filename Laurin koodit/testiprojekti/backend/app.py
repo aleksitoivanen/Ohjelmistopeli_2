@@ -3,10 +3,11 @@ from flask_cors import CORS
 from paaohjelma import *
 from blackjack import aloitustila, hit, stand, serialisoi
 import random
+
 app = Flask(__name__)
 CORS(app)
 
-# Blackjack / Ruotsi2
+# Blackjack / Ruotsi
 BLACKJACK_PELI = None
 BLACKJACK_VOITOT = 0
 RUOTSI_AVATTU = False
@@ -19,12 +20,12 @@ MATIKKA_TEHTAVAT = [
     {"kysymys": "6 * 11", "vastaus": 66},
     {"kysymys": "9 * 250", "vastaus": 2250}
 ]
-
 MATIKKA_OIKEIN = 0
 ITALIA_AVATTU = False
 MATIKKA_KYSYMYS = None
 MATIKKA_VASTAUS = None
 MATIKKA_INDEKSI = 0
+
 # Heppakisa / Iso-Britannia
 HEPAT = ["Hevonen 1", "Hevonen 2", "Hevonen 3"]
 HEPPA_PAJAT = [0, 0, 0]
@@ -46,6 +47,7 @@ def api_aloita():
     global BLACKJACK_PELI, BLACKJACK_VOITOT, RUOTSI_AVATTU
     global MATIKKA_OIKEIN, ITALIA_AVATTU, MATIKKA_KYSYMYS, MATIKKA_VASTAUS, MATIKKA_INDEKSI
     global HEPPA_PAJAT, HEPPA_MAALISSA, BRITANNIA_AVATTU
+
     data = request.get_json()
     nimi = data["nimi"]
     difficulty = data["difficulty"]
@@ -54,8 +56,6 @@ def api_aloita():
 
     vanha_peli = hae_pelaajan_peli(nimi)
 
-    # Jos pelaajalta löytyy vanha peli, ei resetata sitä heti.
-    # Ensin kerrotaan frontendille, että vanha peli löytyi.
     if vanha_peli and jatka is None:
         return jsonify({
             "status": "vanha_peli",
@@ -66,7 +66,7 @@ def api_aloita():
             "difficulty": vanha_peli["difficulty"]
         })
 
-    # Minipelien tila nollataan, kun selainpelisessio käynnistyy.
+    # Nollataan minipelit uuden selainpelisession alussa
     BLACKJACK_PELI = None
     BLACKJACK_VOITOT = 0
     RUOTSI_AVATTU = False
@@ -80,19 +80,15 @@ def api_aloita():
     HEPPA_PAJAT = [0, 0, 0]
     HEPPA_MAALISSA = []
     BRITANNIA_AVATTU = False
+
     if vanha_peli and jatka is True:
-        # Jatketaan vanhaa peliä ilman resetointia
         game_id = vanha_peli["id"]
         status = "jatkettu"
-
     elif vanha_peli:
-        # Käyttäjä valitsi aloittaa alusta
         resetoi_peli(vanha_peli["id"], aloitus, difficulty)
         game_id = vanha_peli["id"]
         status = "uusi"
-
     else:
-        # Pelaajalla ei ollut vanhaa peliä
         game_id = luo_peli(nimi, aloitus, difficulty)
         status = "uusi"
 
@@ -121,31 +117,30 @@ def api_aloita():
 
 @app.route("/api/lenna", methods=["POST"])
 def api_lenna():
-    global RUOTSI_AVATTU, ITALIA_AVATTU
+    global RUOTSI_AVATTU, ITALIA_AVATTU, BRITANNIA_AVATTU
 
     data = request.get_json()
     game_id = data["game_id"]
     kohde_maa = data["iso_country"]
 
-    # Ruotsi vaatii blackjackin
     if kohde_maa == "SE" and not RUOTSI_AVATTU:
         return jsonify({
             "status": "blackjack_required",
             "message": "Ruotsiin lentäminen vaatii blackjack-haasteen. Voita 5 kierrosta."
         })
 
-    # Italia vaatii matikkapelin
     if kohde_maa == "IT" and not ITALIA_AVATTU:
         return jsonify({
             "status": "math_required",
             "message": "Italiaan lentäminen vaatii matikkahaasteen. Ratkaise 5 tehtävää oikein."
-
         })
+
     if kohde_maa == "GB" and not BRITANNIA_AVATTU:
         return jsonify({
             "status": "horse_required",
             "message": "Iso-Britanniaan lentäminen vaatii heppakisan. Valitse hevonen ja voita kisa."
         })
+
     lento = lenna(game_id, kohde_maa)
 
     if lento["status"] == "game_over":
@@ -153,7 +148,6 @@ def api_lenna():
 
     esineet = hae_esineet()
     esine_tila = tarkista_esine(game_id, kohde_maa, esineet)
-
     peli = hae_peli(game_id)
 
     if peli["current_item"] >= len(esineet):
@@ -163,13 +157,10 @@ def api_lenna():
         })
 
     seuraava_esine = esineet[peli["current_item"]]
-
-    # UUSI KOHTA: haetaan tarina vain silloin, kun esine löytyi
     tarina = None
 
     if esine_tila == "loydetty":
         loydetty_esine = None
-
         for esine in esineet:
             if esine["iso_country"] == kohde_maa:
                 loydetty_esine = esine
@@ -328,6 +319,11 @@ def matikka_vastaa():
             "viesti": "Väärä vastaus tai aika loppui. Yritä samaa tehtävää uudestaan."
         })
 
+
+# -------------------------
+# HEPPA / ISO-BRITANNIA
+# -------------------------
+
 @app.route("/api/heppa/aloita", methods=["POST"])
 def heppa_aloita():
     global HEPPA_PAJAT, HEPPA_MAALISSA
@@ -384,5 +380,7 @@ def heppa_liiku():
         "won": voitto,
         "valmis": len(HEPPA_MAALISSA) >= 1
     })
+
+
 if __name__ == "__main__":
     app.run(debug=True)
