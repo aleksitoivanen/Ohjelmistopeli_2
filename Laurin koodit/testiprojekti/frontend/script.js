@@ -55,21 +55,14 @@ async function lahetaAloituspyynto(nimi, difficulty, jatka = null) {
     const data = await response.json();
 
     if (data.status === "vanha_peli") {
-      const jatketaanko = confirm(
-        `Pelaajalle löytyi vanha peli.
+      const jatketaanko = confirm(`Pelaajalle löytyi vanha peli.
 
-` +
-        `CO2: ${data.co2} / ${data.budget}
-` +
-        `Löydettyjä esineitä: ${data.current_item}
-` +
-        `Vaikeustaso: ${data.difficulty}
+  CO2: ${data.co2} / ${data.budget}
+  Löydettyjä esineitä: ${data.current_item}
+  Vaikeustaso: ${data.difficulty}
 
-` +
-        `Paina OK, jos haluat jatkaa vanhaa peliä.
-` +
-        `Paina Peruuta, jos haluat aloittaa alusta.`
-      );
+  Paina OK, jos haluat jatkaa vanhaa peliä.
+  Paina Peruuta, jos haluat aloittaa alusta.`);
 
       await lahetaAloituspyynto(nimi, difficulty, jatketaanko);
       return;
