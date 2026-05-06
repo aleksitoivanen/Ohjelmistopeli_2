@@ -7,7 +7,7 @@ yhteys = mysql.connector.connect(
     port=3306,
     database='ohjelmistopeli',
     user='root',
-    password='Allu8221!',
+    password='291198',
     autocommit=True
 )
 
@@ -76,21 +76,9 @@ def hae_maan_nimi(iso_koodi):
 def resetoi_peli(game_id, aloitus_icao, difficulty):
     cursor = yhteys.cursor()
 
-    cursor.execute("""
-        DELETE FROM game_items
-        WHERE game_id = %s
-    """, (game_id,))
+    cursor.execute('DELETE FROM game_items WHERE game_id = %s', (game_id,))
 
-    cursor.execute("""
-        UPDATE game
-        SET location = %s,
-            co2_consumed = 0,
-            co2_budget = 5000,
-            current_item = 0,
-            attempts = 0,
-            difficulty = %s
-        WHERE id = %s
-    """, (aloitus_icao, difficulty, game_id))
+    cursor.execute("""UPDATE game SET location = %s, co2_consumed = 0, co2_budget = 5000, current_item = 0, attempts = 0, difficulty = %s WHERE id = %s""", (aloitus_icao, difficulty, game_id))
 
     yhteys.commit()
     cursor.close()
