@@ -195,6 +195,7 @@ async function avaaBlackjack() {
   const data = await response.json();
   document.getElementById("blackjack-container").style.display = "block";
   renderBlackjack(data);
+
 }
 
 async function bjUusi() {
@@ -222,6 +223,12 @@ async function bjStand() {
 
   const data = await response.json();
   renderBlackjack(data);
+  const voittoAani = document.getElementById("bj-voitto-aanet");
+
+if (data.tila === "jakaja_yli" || data.tila === "pelaaja_voitti") {
+  voittoAani.currentTime = 0;
+  voittoAani.play();
+}
 
   if (data.valmis) {
     document.getElementById("blackjack-container").style.display = "none";
