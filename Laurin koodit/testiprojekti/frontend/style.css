@@ -37,18 +37,34 @@ h1 {
 
 .kartta-container {
   position: relative;
-  width: 700px;
-  max-width: 72%;
+  width: 1013px;
+  height: 1024px;
   margin: 0;
-  height: 570px;
+  flex-shrink: 0;
 }
 
 .kartta {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
   display: block;
+  width: 1013px;
+  height: 1024px;
   border-radius: 8px;
+}
+
+.maa-nappi {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: red;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.maa-nappi:hover {
+  background-color: darkred;
+  transform: translate(-50%, -50%) scale(1.15);
 }
 
 /* UUSI: oikea palsta kahdelle laatikolle */
@@ -79,21 +95,6 @@ h1 {
   color: #333;
 }
 
-.maa-nappi {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  background-color: red;
-  border: 2px solid white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-.maa-nappi:hover {
-  background-color: darkred;
-  scale: 1.2;
-}
 
 .overlay {
   position: fixed;
