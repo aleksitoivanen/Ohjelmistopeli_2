@@ -208,3 +208,48 @@ h1 {
     width: 100%;
   }
 }
+
+.tarina-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 3000;
+}
+
+.tarina-sisalto {
+  background: black;
+  color: white;
+  width: 420px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+#tarina-kuva {
+  width: 160px;
+  max-width: 70%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+}
+
+#tarina-teksti {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.tarina-sulje {
+  float: right;
+  padding: 6px 10px;
+  cursor: pointer;
+}

@@ -21,11 +21,11 @@ tarina_funktiot = {
 
 def hae_esineen_tarina_ja_kuva(esine):
     kuvat = {
-        "Kirje": "kuvat/kirje.svg",
-        "Kultainen teelusikka": "kuvat/teelusikka.svg",
-        "Kaulakoru": "kuvat/kaulakoru.svg",
-        "Nahkahanskat": "kuvat/nahkahanskat.svg",
-        "Taskukello": "kuvat/taskukello.svg"
+        "Kirje": "kuvat/kirje.png",
+        "Kultainen teelusikka": "kuvat/teelusikka.png",
+        "Kaulakoru": "kuvat/kaulakoru.png",
+        "Nahkahanskat": "kuvat/nahkahanskat.png",
+        "Taskukello": "kuvat/taskukello.png"
     }
 
     tarina = []
