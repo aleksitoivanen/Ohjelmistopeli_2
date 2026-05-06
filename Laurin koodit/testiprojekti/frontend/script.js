@@ -8,21 +8,24 @@ let odottavaBritannia = null;
 let heppaValittu = null;
 let heppaPositions = [0, 0, 0];
 let heppaFinished = [];
+//aleksin
 function naytaLentoGif() {
   const overlay = document.getElementById("lento-overlay");
   overlay.style.display = "flex";
 }
-
+//aleksin
 function piilotaLentoGif() {
   const overlay = document.getElementById("lento-overlay");
   overlay.style.display = "none";
 }
-
+//aleksin
 function odota(ms) {
   return new Promise(function(resolve) {
     setTimeout(resolve, ms);
   });
 }
+
+//yhessä
 async function aloitaPeli() {
   const nimi = document.getElementById("nimi").value.trim();
   const difficulty = document.getElementById("difficulty").value;
@@ -35,6 +38,7 @@ async function aloitaPeli() {
   await lahetaAloituspyynto(nimi, difficulty);
 }
 
+//yhessä
 async function lahetaAloituspyynto(nimi, difficulty, jatka = null) {
   try {
     const body = {
@@ -59,12 +63,12 @@ async function lahetaAloituspyynto(nimi, difficulty, jatka = null) {
     if (data.status === "vanha_peli") {
       const jatketaanko = confirm(`Pelaajalle löytyi vanha peli.
 
-CO2: ${data.co2} / ${data.budget}
-Löydettyjä esineitä: ${data.current_item}
-Vaikeustaso: ${data.difficulty}
+   CO2: ${data.co2} / ${data.budget}
+  Löydettyjä esineitä: ${data.current_item}
+  Vaikeustaso: ${data.difficulty}
 
-Paina OK, jos haluat jatkaa vanhaa peliä.
-Paina Peruuta, jos haluat aloittaa alusta.`);
+  Paina OK, jos haluat jatkaa vanhaa peliä.
+  Paina Peruuta, jos haluat aloittaa alusta.`);
 
       await lahetaAloituspyynto(nimi, difficulty, jatketaanko);
       return;
@@ -99,12 +103,14 @@ Paina Peruuta, jos haluat aloittaa alusta.`);
   }
 }
 
+
+//yhessä
 async function lenna(isoCountry) {
   if (gameId === null) {
     alert("Aloita peli ensin.");
     return;
   }
-
+  //aleksin
   try {
     naytaLentoGif();
     const response = await fetch("http://127.0.0.1:5000/api/lenna", {
@@ -122,39 +128,41 @@ async function lenna(isoCountry) {
 
     await odota(2000);
     piilotaLentoGif();
-
+    //aleksi
     if (data.status === "blackjack_required") {
       odottavaMaa = isoCountry;
       document.getElementById("info").textContent = data.message;
       await avaaBlackjack();
       return;
     }
-
+    //aleksi
     if (data.status === "math_required") {
       odottavaItalia = isoCountry;
       document.getElementById("info").textContent = data.message;
       await avaaMatikka();
       return;
     }
-
+    //aleksi
     if (data.status === "game_over") {
       document.getElementById("info").textContent =
         `${data.message} CO2: ${data.co2} / ${data.budget}`;
       document.getElementById("hint").textContent = "";
       return;
     }
+    //pietari
     if (data.status === "horse_required") {
       odottavaBritannia = isoCountry;
       document.getElementById("info").textContent = data.message;
         await avaaHeppakisa();
       return;
 }
+    //yhessä
     if (data.status === "win") {
       document.getElementById("info").textContent = data.message;
       document.getElementById("hint").textContent = "";
       return;
     }
-
+    //yhessä
     if (data.status === "error") {
       document.getElementById("info").textContent = data.message;
       return;
@@ -162,7 +170,7 @@ async function lenna(isoCountry) {
 
     document.getElementById("info").textContent =
       `Lensit maahan ${data.country}. Matka: ${data.km} km. CO2: ${data.co2} / ${data.budget}`;
-
+    //laurin
     if (data.item_status === "loydetty") {
       document.getElementById("hint").textContent =
         "Löysit esineen! Uusi vihje: " + data.hint;
@@ -183,9 +191,7 @@ async function lenna(isoCountry) {
   }
 }
 
-/* -------------------------
-   BLACKJACK
-------------------------- */
+//aleksin
 
 async function avaaBlackjack() {
   const response = await fetch("http://127.0.0.1:5000/api/blackjack/aloita", {
@@ -294,9 +300,7 @@ function renderBlackjack(data) {
   }
 }
 
-/* -------------------------
-   MATIKKA2
-------------------------- */
+//aleksin
 
 async function avaaMatikka() {
   const response = await fetch("http://127.0.0.1:5000/api/matikka/aloita", {
@@ -375,7 +379,7 @@ function renderMatikka(data) {
   document.getElementById("matikka-vastaus").value = "";
   document.getElementById("matikka-vastaus").focus();
 }
-
+ //laurin
 function naytaTarina(tarina) {
   if (!tarina || !tarina.teksti) {
     return;
@@ -403,7 +407,7 @@ function suljeTarina() {
   document.getElementById("tarina-overlay").style.display = "none";
 }
 
-
+//pietarin
 async function avaaHeppakisa() {
   heppaValittu = null;
   heppaPositions = [0, 0, 0];

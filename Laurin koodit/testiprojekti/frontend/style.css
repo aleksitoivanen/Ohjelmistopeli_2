@@ -1,3 +1,5 @@
+/*yhessä*/
+
 * {
   box-sizing: border-box;
 }
@@ -40,7 +42,7 @@ h1 {
   max-width: 1400px;
   margin: 0 auto;
 }
-
+/*aleksin*/
 .kartta-container {
   position: relative;
   width: 1013px;
@@ -48,14 +50,14 @@ h1 {
   margin: 0;
   flex-shrink: 0;
 }
-
+/*aleksin*/
 .kartta {
   display: block;
   width: 1013px;
   height: 1024px;
   border-radius: 8px;
 }
-
+/*aleksin*/
 .maa-nappi {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -67,20 +69,20 @@ h1 {
   cursor: pointer;
   padding: 0;
 }
-
+/*aleksin*/
 .maa-nappi:hover {
   background-color: darkred;
   transform: translate(-50%, -50%) scale(1.15);
 }
 
-/* UUSI: oikea palsta kahdelle laatikolle */
+/* laurin */
 .oikea-palsta {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 320px;
 }
-
+/* laurin */
 .tilalaatikko {
   background-color: white;
   border-radius: 8px;
@@ -90,7 +92,7 @@ h1 {
   margin: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-
+/*yhessä*/
 #info,
 #info2 {
   font-weight: bold;
@@ -116,7 +118,7 @@ h1 {
   border-radius: 12px;
   box-sizing: border-box;
 }
-
+/*aleksin*/
 .bj-kasi {
   margin: 20px 0;
 }
@@ -194,7 +196,7 @@ h1 {
   max-width: 80%;
   margin-top: 10px;
 }
-
+/*yhessä*/
 @media (max-width: 900px) {
   .peli-layout {
     flex-direction: column;
@@ -214,7 +216,7 @@ h1 {
     width: 100%;
   }
 }
-
+/*laurin*/
 .tarina-overlay {
   position: fixed;
   top: 0;
@@ -259,6 +261,8 @@ h1 {
   padding: 6px 10px;
   cursor: pointer;
 }
+
+/*pietarin*/
 .heppa-ohje {
   font-size: 20px;
   margin-bottom: 20px;
@@ -277,12 +281,12 @@ h1 {
   padding: 12px 22px;
   font-size: 20px;
   margin: 8px;
-  background: #1f3a5f;
+  background: darkblue;
 }
 
 .heppa-valinta-nappi:hover,
 .heppa-paanappi:hover {
-  background: #2a4f80;
+  background: lightskyblue;
 }
 
 .heppa-paanappi:disabled {
@@ -299,7 +303,7 @@ h1 {
   margin: 14px auto;
   width: 90%;
   height: 72px;
-  background: #16324f;
+  background: darkgreen;
   border-radius: 10px;
   overflow: hidden;
 }

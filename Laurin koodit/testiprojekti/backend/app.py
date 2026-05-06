@@ -7,18 +7,18 @@ import random
 app = Flask(__name__)
 CORS(app)
 
-# Blackjack / Ruotsi
+#aleksi
 BLACKJACK_PELI = None
 BLACKJACK_VOITOT = 0
 RUOTSI_AVATTU = False
 
-# Matikka / Italia
+#aleksi
 MATIKKA_TEHTAVAT = [
     {"kysymys": "7 * 7", "vastaus": 49},
     {"kysymys": "2000 / 20", "vastaus": 100},
     {"kysymys": "Paljonko on 15 % numerosta 350?", "vastaus": 52.5},
     {"kysymys": "6 * 11", "vastaus": 66},
-    {"kysymys": "9 * 250", "vastaus": 2250}
+    {"kysymys": "9 * 250", "vastaus": 2000}
 ]
 MATIKKA_OIKEIN = 0
 ITALIA_AVATTU = False
@@ -26,13 +26,13 @@ MATIKKA_KYSYMYS = None
 MATIKKA_VASTAUS = None
 MATIKKA_INDEKSI = 0
 
-# Heppakisa / Iso-Britannia
+#pietari
 HEPAT = ["Hevonen 1", "Hevonen 2", "Hevonen 3"]
 HEPPA_PAJAT = [0, 0, 0]
 HEPPA_MAALISSA = []
 BRITANNIA_AVATTU = False
 
-
+#aleksi
 def seuraava_matiikkatehtava():
     global MATIKKA_KYSYMYS, MATIKKA_VASTAUS, MATIKKA_INDEKSI
 
@@ -41,7 +41,7 @@ def seuraava_matiikkatehtava():
     MATIKKA_VASTAUS = tehtava["vastaus"]
     return MATIKKA_KYSYMYS
 
-
+#yhessä
 @app.route("/api/aloita", methods=["POST"])
 def api_aloita():
     global BLACKJACK_PELI, BLACKJACK_VOITOT, RUOTSI_AVATTU
@@ -66,7 +66,6 @@ def api_aloita():
             "difficulty": vanha_peli["difficulty"]
         })
 
-    # Nollataan minipelit uuden selainpelisession alussa
     BLACKJACK_PELI = None
     BLACKJACK_VOITOT = 0
     RUOTSI_AVATTU = False
@@ -114,7 +113,7 @@ def api_aloita():
         "budget": peli["co2_budget"]
     })
 
-
+#aleksi ja lauri
 @app.route("/api/lenna", methods=["POST"])
 def api_lenna():
     global RUOTSI_AVATTU, ITALIA_AVATTU, BRITANNIA_AVATTU
@@ -179,11 +178,7 @@ def api_lenna():
 
     return jsonify(vastaus)
 
-
-# -------------------------
-# BLACKJACK / RUOTSI
-# -------------------------
-
+#aleksi
 @app.route("/api/blackjack/aloita", methods=["POST"])
 def blackjack_aloita():
     global BLACKJACK_PELI, BLACKJACK_VOITOT
@@ -254,11 +249,7 @@ def blackjack_stand():
 
     return jsonify(data)
 
-
-# -------------------------
-# MATIKKA / ITALIA
-# -------------------------
-
+#aleksi
 @app.route("/api/matikka/aloita", methods=["POST"])
 def matikka_aloita():
     global MATIKKA_OIKEIN, MATIKKA_KYSYMYS, MATIKKA_VASTAUS, MATIKKA_INDEKSI
@@ -322,9 +313,7 @@ def matikka_vastaa():
         })
 
 
-# -------------------------
-# HEPPA / ISO-BRITANNIA
-# -------------------------
+#pietari
 
 @app.route("/api/heppa/aloita", methods=["POST"])
 def heppa_aloita():
